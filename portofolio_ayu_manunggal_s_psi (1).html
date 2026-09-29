@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayu Manunggal, S.Psi. — Personal Portfolio</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pastel: {
+                            bg: '#FDFBF7',          // Warm cream / off-white primary background
+                            card: '#FFFFFF',        // Pure crisp white card background
+                            rose: '#C47B82',        // Muted dusty rose primary accent
+                            roseHover: '#A86168',   // Deeper dusty rose for hover states
+                            blush: '#F9ECEC',       // Soft blush pink background tint
+                            lavender: '#EFE9F5',    // Soft lavender secondary accent
+                            sage: '#E3ECE8',        // Gentle muted sage green accent
+                            cream: '#FAF3EB',       // Warm light cream badge background
+                            border: '#F0E4DE',      // Subtle warm pastel border color
+                            textDark: '#2D2527',    // Deep slate mauve body text
+                            textMuted: '#6B5E62',   // Muted charcoal grey text
+                            accentPink: '#F3D5D8',  // Decorative soft pink floating shape
+                            accentPurple: '#E2D6ED' // Decorative soft purple floating shape
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 30px -10px rgba(196, 123, 130, 0.12)',
+                        'card-hover': '0 20px 35px -12px rgba(196, 123, 130, 0.18)',
+                        'floating': '0 20px 40px -10px rgba(45, 37, 39, 0.08)'
+                    },
+                    animation: {
+                        'float-slow': 'float 6s ease-in-out infinite',
+                        'float-reverse': 'floatReverse 7s ease-in-out infinite',
+                        'pulse-gentle': 'pulseGentle 4s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-10px) rotate(2deg)' }
+                        },
+                        floatReverse: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(8px) rotate(-2deg)' }
+                        },
+                        pulseGentle: {
+                            '0%, 100%': { opacity: '0.7', transform: 'scale(1)' },
+                            '50%': { opacity: '0.95', transform: 'scale(1.02)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons Library -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- html2pdf.js for Client-Side Portfolio PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        /* Custom Smooth Fade-In animation class */
+        .fade-in-element {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-in-element.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FDFBF7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E2D6ED;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #C47B82;
+        }
+
+        /* Print and PDF Export Tweaks */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background: #FFFFFF !important;
+                color: #000000 !important;
+            }
+            .pdf-page-break {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-pastel-bg text-pastel-textDark font-sans antialiased selection:bg-pastel-accentPink selection:text-pastel-textDark overflow-x-hidden">
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-pastel-textDark text-white px-5 py-3.5 rounded-2xl shadow-floating flex items-center gap-3 pointer-events-none no-print">
+        <div class="w-8 h-8 rounded-full bg-pastel-rose/30 text-pastel-accentPink flex items-center justify-center shrink-0">
+            <i data-lucide="check" class="w-4 h-4"></i>
+        </div>
+        <div>
+            <p id="toast-title" class="text-xs font-semibold text-white">Action Completed</p>
+            <p id="toast-message" class="text-xs text-slate-300">Information process succeeded.</p>
+        </div>
+    </div>
+
+    <!-- MAIN PORTFOLIO CONTENT CONTAINER FOR PDF GENERATION -->
+    <div id="portfolio-content">
+
+        <!-- ===== NAVBAR ===== -->
+        <header id="navbar" class="fixed top-0 left-0 w-full z-40 transition-all duration-300 no-print">
+            <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+                
+                <!-- Brand Logo -->
+                <a href="#home" class="flex items-center gap-2.5 group">
+                    <span class="w-10 h-10 rounded-2xl bg-pastel-blush border border-pastel-border text-pastel-rose flex items-center justify-center font-extrabold text-sm tracking-tight group-hover:scale-105 transition-transform shadow-xs">
+                        AM
+                    </span>
+                    <span class="text-base font-bold tracking-tight text-pastel-textDark">
+                        Ayu <span class="font-normal text-pastel-textMuted">Manunggal</span>
+                    </span>
+                </a>
+                
+                <!-- Desktop Nav Links -->
+                <nav class="hidden md:flex items-center space-x-1 bg-white/80 backdrop-blur-md px-4 py-1.5 rounded-full border border-pastel-border shadow-xs text-xs font-semibold text-pastel-textMuted">
+                    <a href="#home" class="nav-link px-3.5 py-2 hover:text-pastel-rose transition-colors rounded-full hover:bg-pastel-blush">Home</a>
+                    <a href="#about" class="nav-link px-3.5 py-2 hover:text-pastel-rose transition-colors rounded-full hover:bg-pastel-blush">About</a>
+                    <a href="#experience" class="nav-link px-3.5 py-2 hover:text-pastel-rose transition-colors rounded-full hover:bg-pastel-blush">Experience</a>
+                    <a href="#skills" class="nav-link px-3.5 py-2 hover:text-pastel-rose transition-colors rounded-full hover:bg-pastel-blush">Skills</a>
+                    <a href="#education" class="nav-link px-3.5 py-2 hover:text-pastel-rose transition-colors rounded-full hover:bg-pastel-blush">Education</a>
+                    <a href="#contact" class="nav-link px-3.5 py-2 hover:text-pastel-rose transition-colors rounded-full hover:bg-pastel-blush">Contact</a>
+                </nav>
+
+                <!-- Desktop CTAs -->
+                <div class="hidden md:flex items-center gap-2">
+                    <button onclick="downloadPortfolioPDF()" id="btn-download-portfolio-nav" class="px-4 py-2 bg-white border border-pastel-border hover:border-pastel-rose text-pastel-textDark text-xs font-bold rounded-full transition-all shadow-xs flex items-center gap-1.5">
+                        <i data-lucide="file-text" class="w-3.5 h-3.5 text-pastel-rose"></i>
+                        <span>PDF Portfolio</span>
+                    </button>
+                    <a href="#contact" class="px-5 py-2 bg-pastel-rose hover:bg-pastel-roseHover text-white text-xs font-bold rounded-full transition-all shadow-soft hover:-translate-y-0.5 flex items-center gap-1.5">
+                        <span>Let's Connect</span>
+                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Toggle Button -->
+                <button id="menu-btn" class="md:hidden text-pastel-textDark p-2.5 rounded-xl bg-white border border-pastel-border shadow-xs hover:bg-pastel-blush transition-colors" aria-label="Toggle Mobile Navigation">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Nav Menu Panel -->
+            <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-lg border-b border-pastel-border px-6 py-6 space-y-3 shadow-floating transition-all">
+                <a href="#home" class="mobile-link block py-2 px-3 text-sm font-semibold text-pastel-textDark hover:bg-pastel-blush rounded-xl hover:text-pastel-rose">Home</a>
+                <a href="#about" class="mobile-link block py-2 px-3 text-sm font-semibold text-pastel-textDark hover:bg-pastel-blush rounded-xl hover:text-pastel-rose">About</a>
+                <a href="#experience" class="mobile-link block py-2 px-3 text-sm font-semibold text-pastel-textDark hover:bg-pastel-blush rounded-xl hover:text-pastel-rose">Experience &amp; Projects</a>
+                <a href="#skills" class="mobile-link block py-2 px-3 text-sm font-semibold text-pastel-textDark hover:bg-pastel-blush rounded-xl hover:text-pastel-rose">Skills</a>
+                <a href="#education" class="mobile-link block py-2 px-3 text-sm font-semibold text-pastel-textDark hover:bg-pastel-blush rounded-xl hover:text-pastel-rose">Education</a>
+                <a href="#contact" class="mobile-link block py-2 px-3 text-sm font-semibold text-pastel-textDark hover:bg-pastel-blush rounded-xl hover:text-pastel-rose">Contact</a>
+                <div class="pt-2 flex flex-col gap-2">
+                    <button onclick="downloadPortfolioPDF()" class="w-full py-2.5 px-3 text-center bg-pastel-blush text-pastel-rose text-xs font-bold rounded-xl border border-pastel-border flex items-center justify-center gap-2">
+                        <i data-lucide="file-text" class="w-4 h-4"></i>
+                        <span>Download Portfolio (PDF)</span>
+                    </button>
+                    <!-- ===== CV FILE ===== -->
+                    <a href="files/CV-Ayu-Manunggal.pdf" download class="w-full py-2.5 px-3 text-center bg-pastel-rose text-white text-xs font-bold rounded-xl shadow-soft flex items-center justify-center gap-2">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        <span>Download CV (PDF)</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== HERO SECTION ===== -->
+        <!-- ===== EDIT YOUR PERSONAL INFORMATION HERE ===== -->
+        <section id="home" class="min-h-screen flex items-center pt-28 pb-16 px-6 relative overflow-hidden">
+            <div class="max-w-6xl mx-auto w-full grid lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
+                
+                <!-- Left Text Content -->
+                <div class="lg:col-span-7 space-y-7 text-center lg:text-left fade-in-element">
+                    
+                    <!-- Status Badge -->
+                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-pastel-blush border border-pastel-border text-pastel-rose text-xs font-bold rounded-full tracking-wide shadow-xs">
+                        <span class="w-2 h-2 rounded-full bg-pastel-rose animate-ping"></span>
+                        <span>Psychology Graduate • UTM Alumna</span>
+                    </div>
+
+                    <!-- Main Title & Tagline -->
+                    <div class="space-y-3">
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-pastel-textDark leading-tight tracking-tight">
+                            Ayu Manunggal
+                            <span class="block text-xl sm:text-2xl font-normal text-pastel-textMuted mt-1">Psychology Graduate</span>
+                        </h1>
+                        
+                        <!-- Tagline -->
+                        <p class="text-2xl sm:text-3xl font-serif italic text-pastel-rose font-normal pt-1">
+                            "Curious to Learn, Ready to Grow."
+                        </p>
+
+                        <!-- Supporting Text -->
+                        <p class="text-sm sm:text-base text-pastel-textMuted font-normal max-w-xl mx-auto lg:mx-0 leading-relaxed pt-2">
+                            Psychology graduate with an interest in Human Resources, Recruitment, People Development, and people-oriented work.
+                        </p>
+                    </div>
+
+                    <!-- Descriptive Pills -->
+                    <div class="flex flex-wrap justify-center lg:justify-start gap-2 pt-1 text-xs font-medium text-pastel-textMuted">
+                        <span class="px-3 py-1 bg-white border border-pastel-border rounded-lg shadow-2xs">Psychological Assessment</span>
+                        <span class="px-3 py-1 bg-white border border-pastel-border rounded-lg shadow-2xs">Administration</span>
+                        <span class="px-3 py-1 bg-white border border-pastel-border rounded-lg shadow-2xs">Communication</span>
+                        <span class="px-3 py-1 bg-white border border-pastel-border rounded-lg shadow-2xs">Teamwork</span>
+                    </div>
+
+                    <!-- Call To Action Buttons -->
+                    <div class="flex flex-wrap justify-center lg:justify-start items-center gap-3 pt-3">
+                        <a href="#experience" class="px-6 py-3.5 bg-pastel-rose hover:bg-pastel-roseHover text-white font-bold text-xs rounded-2xl shadow-soft hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2">
+                            <span>View My Experience</span>
+                            <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
+                        </a>
+
+                        <a href="#contact" class="px-6 py-3.5 bg-white border border-pastel-border hover:border-pastel-rose text-pastel-textDark font-bold text-xs rounded-2xl hover:bg-pastel-blush/50 transition-all duration-300 shadow-xs">
+                            Let's Connect
+                        </a>
+
+                        <!-- ===== CV FILE ===== -->
+                        <!-- Replace 'files/CV-Ayu-Manunggal.pdf' with your actual PDF file location -->
+                        <a href="files/CV-Ayu-Manunggal.pdf" download class="px-6 py-3.5 bg-pastel-cream border border-pastel-border hover:border-pastel-rose text-pastel-textDark font-bold text-xs rounded-2xl hover:bg-white transition-all duration-300 shadow-xs flex items-center gap-2">
+                            <i data-lucide="download" class="w-4 h-4 text-pastel-rose"></i>
+                            <span>Download CV</span>
+                        </a>
+                    </div>
+
+                </div>
+
+                <!-- Right Profile Photo Area & Upload Feature -->
+                <div class="lg:col-span-5 flex flex-col items-center justify-center relative fade-in-element">
+                    
+                    <!-- Decorative Background Shapes with Subtle Floating Animation -->
+                    <div class="relative w-full max-w-xs sm:max-w-sm">
+                        <div class="absolute -top-6 -left-6 w-32 h-32 bg-pastel-accentPink/60 rounded-3xl blur-xl animate-float-slow -z-10"></div>
+                        <div class="absolute -bottom-8 -right-6 w-36 h-36 bg-pastel-accentPurple/60 rounded-full blur-2xl animate-float-reverse -z-10"></div>
+                        <div class="absolute top-1/2 -right-10 w-24 h-24 bg-pastel-sage/80 rounded-2xl rotate-12 -z-10 animate-pulse-gentle"></div>
+
+                        <!-- Profile Photo Container Frame -->
+                        <!-- ===== PROFILE PHOTO ===== -->
+                        <div class="relative bg-white p-3.5 rounded-[2.5rem] border border-pastel-border shadow-floating group">
+                            
+                            <!-- Profile Photo Image Display -->
+                            <!-- <!-- Upload your profile photo here --> -->
+                            <div class="overflow-hidden rounded-[2rem] aspect-[4/5] bg-pastel-blush relative">
+                                <img 
+                                    id="profile-img-preview"
+                                    src="ayu_bg putih.jpeg" 
+                                    alt="Ayu Manunggal, S.Psi. - Profile Photo" 
+                                    class="w-full h-full object-cover object-top group-hover:scale-102 transition-transform duration-500"
+                                    onerror="this.onerror=null; this.src='https://placehold.co/400x500/F9ECEC/C47B82?text=Ayu+Manunggal,+S.Psi.';"
+                                />
+                                
+                                <!-- Soft Gradient Overlay -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-pastel-textDark/25 via-transparent to-transparent opacity-60"></div>
+                            </div>
+
+                            <!-- Floating Academic Micro Card -->
+                            <div class="absolute -bottom-4 -left-4 bg-white/95 backdrop-blur-md p-3 rounded-2xl border border-pastel-border shadow-soft flex items-center gap-3 animate-float-slow">
+                                <div class="w-9 h-9 rounded-xl bg-pastel-blush text-pastel-rose flex items-center justify-center font-bold text-xs shrink-0">
+                                    <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-bold uppercase tracking-wider text-pastel-rose">Sarjana Psikologi</p>
+                                    <p class="text-xs font-extrabold text-pastel-textDark">IPK 3.68 / 4.00</p>
+                                </div>
+                            </div>
+
+                            <!-- Floating Secondary Badge -->
+                            <div class="absolute -top-3 -right-3 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-pastel-border shadow-xs flex items-center gap-2">
+                                <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
+                                <span class="text-xs font-semibold text-pastel-textDark">Ready for HR Roles</span>
+                            </div>
+
+                        </div>
+
+                        <!-- LOCAL PHOTO UPLOADER BUTTON & INPUT -->
+                        <div class="mt-6 text-center no-print">
+                            <label for="photo-upload-input" class="inline-flex items-center gap-2 px-4 py-2 bg-white hover:bg-pastel-blush border border-pastel-border text-pastel-textDark text-xs font-bold rounded-xl cursor-pointer transition-all shadow-2xs hover:border-pastel-rose">
+                                <i data-lucide="camera" class="w-4 h-4 text-pastel-rose"></i>
+                                <span>Upload Photo</span>
+                            </label>
+                            <input 
+                                type="file" 
+                                id="photo-upload-input" 
+                                accept="image/*" 
+                                class="hidden" 
+                                onchange="previewProfilePhoto(event)" 
+                            />
+                            <p class="text-[11px] text-pastel-textMuted mt-1.5 font-medium">
+                                Upload your photo (Instant local preview)
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== ABOUT ME SECTION ===== -->
+        <section id="about" class="py-20 px-6 bg-white border-y border-pastel-border relative">
+            <div class="max-w-6xl mx-auto space-y-12">
+                
+                <!-- Section Header -->
+                <div class="text-center max-w-2xl mx-auto space-y-3 fade-in-element">
+                    <span class="text-xs font-extrabold uppercase tracking-widest text-pastel-rose bg-pastel-blush px-3.5 py-1.5 rounded-full border border-pastel-border">
+                        Background &amp; Profile
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-pastel-textDark">About Me</h2>
+                    <div class="w-10 h-1 bg-pastel-rose rounded-full mx-auto mt-2"></div>
+                </div>
+
+                <!-- Main Narrative Text -->
+                <div class="max-w-3xl mx-auto text-center fade-in-element">
+                    <p class="text-base sm:text-lg text-pastel-textDark leading-relaxed font-normal">
+                        "I am a Psychology graduate with an interest in Human Resources, Recruitment, and People Development. Through academic, laboratory, community, and organizational experiences, I have developed skills in psychological assessment, administration, communication, teamwork, research, and problem solving."
+                    </p>
+                </div>
+
+                <!-- Stat & Highlight Cards Grid -->
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 fade-in-element">
+                    
+                    <div class="p-6 rounded-2xl bg-pastel-bg border border-pastel-border hover:border-pastel-rose/50 transition-all shadow-2xs hover:-translate-y-1 group">
+                        <div class="w-11 h-11 rounded-xl bg-pastel-blush text-pastel-rose flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="award" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-sm font-bold text-pastel-textDark">Psychology Graduate</h3>
+                        <p class="text-xs text-pastel-textMuted mt-1.5 leading-relaxed">S.Psi. from Universitas Trunojoyo Madura with 3.68/4.00 GPA.</p>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-pastel-bg border border-pastel-border hover:border-pastel-rose/50 transition-all shadow-2xs hover:-translate-y-1 group">
+                        <div class="w-11 h-11 rounded-xl bg-pastel-sage text-emerald-800 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="flask-conical" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-sm font-bold text-pastel-textDark">Laboratory Experience</h3>
+                        <p class="text-xs text-pastel-textMuted mt-1.5 leading-relaxed">Administration &amp; scoring of personality, intelligence, &amp; work performance tests.</p>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-pastel-bg border border-pastel-border hover:border-pastel-rose/50 transition-all shadow-2xs hover:-translate-y-1 group">
+                        <div class="w-11 h-11 rounded-xl bg-pastel-lavender text-purple-800 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="book-open-check" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-sm font-bold text-pastel-textDark">Research Experience</h3>
+                        <p class="text-xs text-pastel-textMuted mt-1.5 leading-relaxed">Qualitative psychology research, in-depth interviews, &amp; published journal article.</p>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-pastel-bg border border-pastel-border hover:border-pastel-rose/50 transition-all shadow-2xs hover:-translate-y-1 group">
+                        <div class="w-11 h-11 rounded-xl bg-pastel-cream text-amber-800 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="users" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-sm font-bold text-pastel-textDark">Community &amp; Org</h3>
+                        <p class="text-xs text-pastel-textMuted mt-1.5 leading-relaxed">Public Relations for KKN, Liaison Officer for ORDIPSI, &amp; hydroponic intervention.</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== EXPERIENCE & PROJECTS SECTION ===== -->
+        <section id="experience" class="py-24 px-6 max-w-6xl mx-auto space-y-12">
+            
+            <!-- Section Header -->
+            <div class="text-center max-w-2xl mx-auto space-y-3 fade-in-element">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-pastel-rose bg-pastel-blush px-3.5 py-1.5 rounded-full border border-pastel-border">
+                    Track Record
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-pastel-textDark">Experience &amp; Projects</h2>
+                <p class="text-pastel-textMuted text-xs sm:text-sm">Practical psychology laboratory administration, public relations, and research work.</p>
+            </div>
+
+            <!-- Card Grid -->
+            <!-- ===== PROJECT IMAGES ===== -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Card 1: Psychology Lab Assistant -->
+                <div class="bg-white rounded-3xl p-6 border border-pastel-border shadow-soft hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between fade-in-element group">
+                    <div class="space-y-4">
+                        <!-- Replace this image with your project image: images/laboratory.jpg -->
+                        <div class="h-40 rounded-2xl overflow-hidden bg-pastel-blush relative">
+                            <img 
+                                src="images/laboratory.jpg" 
+                                alt="Psychology Laboratory Assistant" 
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                onerror="this.onerror=null; this.src='https://placehold.co/600x400/F9ECEC/C47B82?text=Psychology+Laboratory';"
+                            />
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-xs px-3 py-1 rounded-full text-[10px] font-bold text-pastel-rose tracking-wider uppercase border border-pastel-border">
+                                EXPERIENCE • Feb 2025 – Feb 2026
+                            </span>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-bold text-pastel-textDark group-hover:text-pastel-rose transition-colors">
+                                Psychology Laboratory Assistant
+                            </h3>
+                            <p class="text-xs font-semibold text-pastel-rose">Universitas Trunojoyo Madura</p>
+                        </div>
+
+                        <ul class="text-xs text-pastel-textMuted space-y-1.5 list-disc list-inside leading-relaxed">
+                            <li>Psychological assessment administration (EPPS, DISC, IST, WAIS, Wartegg, Kraepelin, Pauli, etc.).</li>
+                            <li>Test scoring &amp; laboratory administration.</li>
+                            <li>Practicum assistance for psychology students.</li>
+                            <li>Maintaining test confidentiality and laboratory SOP compliance according to ethics.</li>
+                        </ul>
+                    </div>
+
+                    <div class="pt-4 border-t border-pastel-border flex flex-wrap gap-1.5 mt-4">
+                        <span class="text-[10px] font-semibold px-2.5 py-1 bg-pastel-bg rounded-lg text-pastel-textMuted border border-pastel-border">Assessment</span>
+                        <span class="text-[10px] font-semibold px-2.5 py-1 bg-pastel-bg rounded-lg text-pastel-textMuted border border-pastel-border">Test Scoring</span>
+                        <span class="text-[10px] font-semibold px-2.5 py-1 bg-pastel-bg rounded-lg text-pastel-textMuted border border-pastel-border">Ethics &amp; SOP</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Community Assessment PR -->
+                <div class="bg-white rounded-3xl p-6 border border-pastel-border shadow-soft hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between fade-in-element group">
+                    <div class="space-y-4">
+                        <!-- Replace this image with your project image: images/community.jpg -->
+                        <div class="h-40 rounded-2xl overflow-hidden bg-pastel-sage/50 relative">
+                            <img 
+                                src="images/community.jpg" 
+                                alt="Community Assessment PR" 
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                onerror="this.onerror=null; this.src='https://placehold.co/600x400/E3ECE8/2D2527?text=Community+PR';"
+                            />
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-xs px-3 py-1 rounded-full text-[10px] font-bold text-emerald-800 tracking-wider uppercase border border-pastel-border">
+                                EXPERIENCE • Mar 2024 – Dec 2024
+                            </span>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-bold text-pastel-textDark group-hover:text-pastel-rose transition-colors">
+                                Community Assessment &amp; Intervention – PR
+                            </h3>
+                            <p class="text-xs font-semibold text-pastel-rose">Gili Timur, Madura</p>
+                        </div>
+
+                        <ul class="text-xs text-pastel-textMuted space-y-1.5 list-disc list-inside leading-relaxed">
+                            <li>Communication with community members and key stakeholders.</li>
+                            <li>Supporting community activities and empowerment initiatives.</li>
+                            <li>Coordination, stakeholder management, and clear information delivery.</li>
+                        </ul>
+                    </div>
+
+                    <div class="pt-4 border-t border-pastel-border flex flex-wrap gap-1.5 mt-4">
+                        <span class="text-[10px] font-semibold px-2.5 py-1 bg-pastel-bg rounded-lg text-pastel-textMuted border border-pastel-border">Public Relations</span>
+                        <span class="text-[10px] font-semibold px-2.5 py-1 bg-pastel-bg rounded-lg text-pastel-textMuted border border-pastel-border">Stakeholder Mgmt</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: KKN Public Relations -->
+                <div class="bg-white rounded-3xl p-6 border border-pastel-border shadow-soft hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between fade-in-element group">
+                    <div class="space-y-4">
+                        <div class="h-40 rounded-2xl overflow-hidden bg-pastel-lavender/50 relative flex items-center justify-center p-6 text-center">
+                            <div class="w-14 h-14 rounded-2xl bg-white/90 text-purple-800 flex items-center justify-center shadow-xs">
+                                <i data-lucide="megaphone" class="w-7 h-7"></i>
+                            </div>
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-xs px-3 py-1 rounded-full text-[10px] font-bold text-purple-800 tracking-wider uppercase border border-pastel-border">
+                                EXPERIENCE • Jun 2025 – Jul 2025
+                            </span>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-bold text-pastel-textDark group-hover:text-pastel-rose transition-colors">
+                                KKN – Public Relations
+                            </h3>
+                            <p class="text-xs font-semibold text-pastel-rose">Klapayan, Bangkalan</p>
+                        </div>
+
+                        <ul class="text-xs text-pastel-textMuted space-y-1.5 list-disc list-inside leading-relaxed">
+                            <li>Public communication and serving as official spokesperson.</li>
+                            <li>Coordination with villagers, youth leaders, and project teams.</li>
+                            <li>Supporting various village activities, workshops, and community programs.</li>
+                        </ul>
+                    </div>
+
+                    <div class="pt-4 border-t border-pastel-border flex flex-wrap gap-1.5 mt-4">
+                        <span class="text-[10px] font-semibold px-2.5 py-1 bg-pastel-bg rounded-lg text-pastel-textMuted border border-pastel-border">Public Speaking</span>
+                        <span class="text-[10px] font-semibold px-2.5 py-1 bg-pastel-bg rounded-lg text-pastel-textMuted border border-pastel-border">Coordination</span>
+                    </div>
+                </div>
+
+                <!-- Card 4: Liaison Officer ORDIPSI -->
+                <div class="bg-white rounded-3xl p-6 border border-pastel-border shadow-soft hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between fade-in-element group">
+                    <div class="space-y-4">
+                        <div class="h-40 rounded-2xl overflow-hidden bg-pastel-cream relative flex items-center justify-center p-6 text-center">
+                            <div class="w-14 h-14 rounded-2xl bg-white/90 text-amber-800 flex items-center justify-center shadow-xs">
+                                <i data-lucide="user-check" class="w-7 h-7"></i>
+                            </div>
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-xs px-3 py-1 rounded-full text-[10px] font-bold text-amber-800 tracking-wider uppercase border border-pastel-border">
+                                EXPERIENCE • Jun 2023 – Sep 2024
+                            </span>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-bold text-pastel-textDark group-hover:text-pastel-rose transition-colors">
+                                ORDIPSI 2024 – Liaison Officer
+                            </h3>
+                            <p class="text-xs font-semibold text-pastel-rose">Madura, Jawa Timur</p>
+                        </div>
+
+                        <ul class="text-xs text-pastel-textMuted space-y-1.5 list-disc list-inside leading-relaxed">
+                            <li>Participant and external speaker communication.</li>
+                            <li>Cross-functional coordination during event execution.</li>
+                            <li>Professional hospitality and comprehensive event support.</li>
+                        </ul>
+                    </div>
+
+                    <div class="pt-4 border-t border-pastel-border flex flex-wrap gap-1.5 mt-4">
+                        <span class="text-[10px] font-semibold px-2.5 py-1 bg-pastel-bg rounded-lg text-pastel-textMuted border border-pastel-border">Interpersonal</span>
+                        <span class="text-[10px] font-semibold px-2.5 py-1 bg-pastel-bg rounded-lg text-pastel-textMuted border border-pastel-border">Event Support</span>
+                    </div>
+                </div>
+
+                <!-- Card 5: Hydroponic Project -->
+                <div class="bg-white rounded-3xl p-6 border border-pastel-border shadow-soft hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between fade-in-element group">
+                    <div class="space-y-4">
+                        <!-- Replace this image with your project image: images/hydroponic.jpg -->
+                        <div class="h-40 rounded-2xl overflow-hidden bg-emerald-50 relative">
+                            <img 
+                                src="images/hydroponic.jpg" 
+                                alt="Hydroponic Community Project" 
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                onerror="this.onerror=null; this.src='https://placehold.co/600x400/E3ECE8/2D2527?text=Hydroponic+Project';"
+                            />
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-xs px-3 py-1 rounded-full text-[10px] font-bold text-emerald-800 tracking-wider uppercase border border-pastel-border">
+                                PROJECT • Community Empowerment
+                            </span>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-bold text-pastel-textDark group-hover:text-pastel-rose transition-colors">
+                                Hydroponic Community Project
+                            </h3>
+                            <p class="text-xs font-semibold text-emerald-700">Successfully harvested 229 plants</p>
+                        </div>
+
+                        <p class="text-xs text-pastel-textMuted leading-relaxed">
+                            Involved in a community hydroponic project. Supported overall project activities, public relations, and community socialization resulting in a 229 plant yield.
+                        </p>
+                    </div>
+
+                    <div class="pt-4 border-t border-pastel-border flex flex-wrap gap-1.5 mt-4">
+                        <span class="text-[10px] font-semibold px-2.5 py-1 bg-pastel-bg rounded-lg text-pastel-textMuted border border-pastel-border">Empowerment</span>
+                        <span class="text-[10px] font-semibold px-2.5 py-1 bg-pastel-bg rounded-lg text-pastel-textMuted border border-pastel-border">Project PR</span>
+                    </div>
+                </div>
+
+                <!-- Card 6: Psychology Thesis Research -->
+                <div class="bg-white rounded-3xl p-6 border border-pastel-border shadow-soft hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between fade-in-element group">
+                    <div class="space-y-4">
+                        <!-- Replace this image with your project image: images/research.jpg -->
+                        <div class="h-40 rounded-2xl overflow-hidden bg-pastel-blush relative">
+                            <img 
+                                src="images/research.jpg" 
+                                alt="Psychology Qualitative Research" 
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                onerror="this.onerror=null; this.src='https://placehold.co/600x400/F9ECEC/C47B82?text=Qualitative+Research';"
+                            />
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-xs px-3 py-1 rounded-full text-[10px] font-bold text-pastel-rose tracking-wider uppercase border border-pastel-border">
+                                PROJECT • Undergraduate Thesis
+                            </span>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-bold text-pastel-textDark group-hover:text-pastel-rose transition-colors">
+                                Psychology Qualitative Thesis
+                            </h3>
+                            <p class="text-xs font-semibold text-pastel-rose">Academic Research</p>
+                        </div>
+
+                        <p class="text-xs text-pastel-textMuted leading-relaxed">
+                            Qualitative psychology research involving semi-structured interviews, behavioral observation, data coding, and qualitative thematic analysis.
+                        </p>
+                    </div>
+
+                    <div class="pt-4 border-t border-pastel-border flex flex-wrap gap-1.5 mt-4">
+                        <span class="text-[10px] font-semibold px-2.5 py-1 bg-pastel-bg rounded-lg text-pastel-textMuted border border-pastel-border">Qualitative</span>
+                        <span class="text-[10px] font-semibold px-2.5 py-1 bg-pastel-bg rounded-lg text-pastel-textMuted border border-pastel-border">Data Analysis</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Card 7: Featured Published Journal Banner -->
+            <div class="bg-gradient-to-r from-pastel-blush via-white to-pastel-lavender/40 rounded-3xl p-8 border border-pastel-border shadow-soft fade-in-element relative overflow-hidden">
+                <div class="max-w-3xl space-y-3 relative z-10">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1 bg-white rounded-full border border-pastel-border text-xs font-bold text-pastel-rose shadow-2xs">
+                        <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+                        <span>PUBLISHED JOURNAL • ACADEMIC PUBLICATION</span>
+                    </div>
+
+                    <h3 class="text-xl sm:text-2xl font-extrabold text-pastel-textDark font-serif italic">
+                        "Digital Parenting Practices among Single Mother in Early Adulthood in Madura"
+                    </h3>
+
+                    <p class="text-xs sm:text-sm text-pastel-textMuted leading-relaxed">
+                        Qualitative Psychology research focusing on digital parenting practices among single mothers in early adulthood in Madura, published in an academic publication.
+                    </p>
+
+                    <div class="pt-2 flex flex-wrap items-center gap-4 text-xs font-semibold text-pastel-textDark">
+                        <span class="flex items-center gap-1.5 text-pastel-rose">
+                            <i data-lucide="check-circle-2" class="w-4 h-4"></i> Qualitative Research Method
+                        </span>
+                        <span class="flex items-center gap-1.5 text-pastel-rose">
+                            <i data-lucide="check-circle-2" class="w-4 h-4"></i> Published Scientific Paper
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ===== MY SKILLS SECTION ===== -->
+        <section id="skills" class="py-20 px-6 bg-white border-y border-pastel-border">
+            <div class="max-w-4xl mx-auto space-y-10 text-center">
+                
+                <!-- Section Header -->
+                <div class="space-y-3 max-w-xl mx-auto fade-in-element">
+                    <span class="text-xs font-extrabold uppercase tracking-widest text-pastel-rose bg-pastel-blush px-3.5 py-1.5 rounded-full border border-pastel-border">
+                        Capabilities
+                    </span>
+                    <h2 class="text-3xl font-extrabold text-pastel-textDark">My Skills</h2>
+                    <p class="text-pastel-textMuted text-xs sm:text-sm">
+                        Core competencies in psychological assessment, research, communication, and administration.
+                    </p>
+                </div>
+
+                <!-- Skills Pill Badges (No percentage or progress bars) -->
+                <div class="flex flex-wrap justify-center gap-3 fade-in-element">
+                    
+                    <div class="px-5 py-3 rounded-2xl bg-pastel-bg border border-pastel-border text-pastel-textDark text-xs sm:text-sm font-semibold flex items-center gap-2.5 hover:border-pastel-rose hover:bg-pastel-blush transition-all duration-300 shadow-2xs hover:-translate-y-0.5">
+                        <i data-lucide="clipboard-check" class="w-4 h-4 text-pastel-rose"></i>
+                        <span>Psychological Assessment</span>
+                    </div>
+
+                    <div class="px-5 py-3 rounded-2xl bg-pastel-bg border border-pastel-border text-pastel-textDark text-xs sm:text-sm font-semibold flex items-center gap-2.5 hover:border-pastel-rose hover:bg-pastel-blush transition-all duration-300 shadow-2xs hover:-translate-y-0.5">
+                        <i data-lucide="folder-kanban" class="w-4 h-4 text-pastel-rose"></i>
+                        <span>Administration</span>
+                    </div>
+
+                    <div class="px-5 py-3 rounded-2xl bg-pastel-bg border border-pastel-border text-pastel-textDark text-xs sm:text-sm font-semibold flex items-center gap-2.5 hover:border-pastel-rose hover:bg-pastel-blush transition-all duration-300 shadow-2xs hover:-translate-y-0.5">
+                        <i data-lucide="database" class="w-4 h-4 text-pastel-rose"></i>
+                        <span>Data Management &amp; SPSS</span>
+                    </div>
+
+                    <div class="px-5 py-3 rounded-2xl bg-pastel-bg border border-pastel-border text-pastel-textDark text-xs sm:text-sm font-semibold flex items-center gap-2.5 hover:border-pastel-rose hover:bg-pastel-blush transition-all duration-300 shadow-2xs hover:-translate-y-0.5">
+                        <i data-lucide="search" class="w-4 h-4 text-pastel-rose"></i>
+                        <span>Research</span>
+                    </div>
+
+                    <div class="px-5 py-3 rounded-2xl bg-pastel-bg border border-pastel-border text-pastel-textDark text-xs sm:text-sm font-semibold flex items-center gap-2.5 hover:border-pastel-rose hover:bg-pastel-blush transition-all duration-300 shadow-2xs hover:-translate-y-0.5">
+                        <i data-lucide="messages-square" class="w-4 h-4 text-pastel-rose"></i>
+                        <span>Communication</span>
+                    </div>
+
+                    <div class="px-5 py-3 rounded-2xl bg-pastel-bg border border-pastel-border text-pastel-textDark text-xs sm:text-sm font-semibold flex items-center gap-2.5 hover:border-pastel-rose hover:bg-pastel-blush transition-all duration-300 shadow-2xs hover:-translate-y-0.5">
+                        <i data-lucide="megaphone" class="w-4 h-4 text-pastel-rose"></i>
+                        <span>Public Relations</span>
+                    </div>
+
+                    <div class="px-5 py-3 rounded-2xl bg-pastel-bg border border-pastel-border text-pastel-textDark text-xs sm:text-sm font-semibold flex items-center gap-2.5 hover:border-pastel-rose hover:bg-pastel-blush transition-all duration-300 shadow-2xs hover:-translate-y-0.5">
+                        <i data-lucide="users" class="w-4 h-4 text-pastel-rose"></i>
+                        <span>Teamwork</span>
+                    </div>
+
+                    <div class="px-5 py-3 rounded-2xl bg-pastel-bg border border-pastel-border text-pastel-textDark text-xs sm:text-sm font-semibold flex items-center gap-2.5 hover:border-pastel-rose hover:bg-pastel-blush transition-all duration-300 shadow-2xs hover:-translate-y-0.5">
+                        <i data-lucide="lightbulb" class="w-4 h-4 text-pastel-rose"></i>
+                        <span>Problem Solving</span>
+                    </div>
+
+                    <div class="px-5 py-3 rounded-2xl bg-pastel-bg border border-pastel-border text-pastel-textDark text-xs sm:text-sm font-semibold flex items-center gap-2.5 hover:border-pastel-rose hover:bg-pastel-blush transition-all duration-300 shadow-2xs hover:-translate-y-0.5">
+                        <i data-lucide="file-spreadsheet" class="w-4 h-4 text-pastel-rose"></i>
+                        <span>Microsoft Office</span>
+                    </div>
+
+                    <div class="px-5 py-3 rounded-2xl bg-pastel-bg border border-pastel-border text-pastel-textDark text-xs sm:text-sm font-semibold flex items-center gap-2.5 hover:border-pastel-rose hover:bg-pastel-blush transition-all duration-300 shadow-2xs hover:-translate-y-0.5">
+                        <i data-lucide="refresh-cw" class="w-4 h-4 text-pastel-rose"></i>
+                        <span>Adaptability</span>
+                    </div>
+
+                    <div class="px-5 py-3 rounded-2xl bg-pastel-bg border border-pastel-border text-pastel-textDark text-xs sm:text-sm font-semibold flex items-center gap-2.5 hover:border-pastel-rose hover:bg-pastel-blush transition-all duration-300 shadow-2xs hover:-translate-y-0.5">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-pastel-rose"></i>
+                        <span>Attention to Detail</span>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== EDUCATION SECTION ===== -->
+        <section id="education" class="py-20 px-6 max-w-4xl mx-auto space-y-8">
+            
+            <!-- Section Header -->
+            <div class="text-center max-w-xl mx-auto space-y-3 fade-in-element">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-pastel-rose bg-pastel-blush px-3.5 py-1.5 rounded-full border border-pastel-border">
+                    Academic Background
+                </span>
+                <h2 class="text-3xl font-extrabold text-pastel-textDark">Education</h2>
+            </div>
+
+            <!-- Clean Academic Card -->
+            <div class="bg-white rounded-3xl p-8 border border-pastel-border shadow-soft hover:shadow-card-hover transition-all duration-300 fade-in-element flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-5">
+                    <div class="w-16 h-16 rounded-2xl bg-pastel-blush text-pastel-rose flex items-center justify-center shrink-0 border border-pastel-border shadow-xs">
+                        <i data-lucide="graduation-cap" class="w-8 h-8"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold text-pastel-rose bg-pastel-cream px-3 py-1 rounded-full border border-pastel-border">
+                            Graduated July 2026
+                        </span>
+                        <h3 class="text-xl font-bold text-pastel-textDark mt-2">Bachelor of Psychology (S.Psi.)</h3>
+                        <p class="text-sm font-medium text-pastel-textMuted">Universitas Trunojoyo Madura</p>
+                    </div>
+                </div>
+
+                <div class="bg-pastel-bg p-4 rounded-2xl border border-pastel-border text-center md:text-right w-full md:w-auto shrink-0">
+                    <p class="text-[10px] font-bold text-pastel-textMuted uppercase tracking-wider">GPA / Indeks Prestasi</p>
+                    <p class="text-2xl font-extrabold text-pastel-rose mt-0.5">3.68 <span class="text-xs text-pastel-textMuted font-normal">/ 4.00</span></p>
+                    <p class="text-[10px] font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full inline-block mt-1">Sangat Memuaskan</p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ===== CONTACT SECTION ===== -->
+        <!-- ===== EDIT YOUR PERSONAL INFORMATION HERE ===== -->
+        <section id="contact" class="py-20 px-6 max-w-4xl mx-auto">
+            <div class="bg-white rounded-3xl p-8 sm:p-12 border border-pastel-border shadow-floating text-center space-y-8 fade-in-element relative overflow-hidden">
+                
+                <div class="space-y-3 max-w-md mx-auto">
+                    <span class="text-xs font-extrabold uppercase tracking-widest text-pastel-rose bg-pastel-blush px-3.5 py-1.5 rounded-full border border-pastel-border">
+                        Get in Touch
+                    </span>
+                    <h2 class="text-3xl font-extrabold text-pastel-textDark">Let's Connect</h2>
+                    <p class="text-xs sm:text-sm text-pastel-textMuted leading-relaxed">
+                        Interested in connecting or learning more about my experience? Feel free to reach out.
+                    </p>
+                </div>
+
+                <!-- Contact Grid Cards -->
+                <div class="grid sm:grid-cols-3 gap-4 text-left pt-2">
+                    
+                    <!-- Email Button -->
+                    <button onclick="copyToClipboard('zorozoe07@gmail.com', 'Email Address')" class="p-5 rounded-2xl bg-pastel-bg hover:bg-pastel-blush transition-all border border-pastel-border group text-left">
+                        <div class="w-10 h-10 rounded-xl bg-white text-pastel-rose flex items-center justify-center mb-3 shadow-2xs group-hover:scale-110 transition-transform">
+                            <i data-lucide="mail" class="w-5 h-5"></i>
+                        </div>
+                        <p class="text-[10px] font-bold uppercase tracking-wider text-pastel-textMuted">Email</p>
+                        <p class="text-xs font-bold text-pastel-textDark truncate mt-0.5">zorozoe07@gmail.com</p>
+                    </button>
+
+                    <!-- WhatsApp -->
+                    <a href="https://wa.me/6285730701887" target="_blank" rel="noopener noreferrer" class="p-5 rounded-2xl bg-pastel-bg hover:bg-pastel-blush transition-all border border-pastel-border group text-left block">
+                        <div class="w-10 h-10 rounded-xl bg-white text-emerald-600 flex items-center justify-center mb-3 shadow-2xs group-hover:scale-110 transition-transform">
+                            <i data-lucide="phone" class="w-5 h-5"></i>
+                        </div>
+                        <p class="text-[10px] font-bold uppercase tracking-wider text-pastel-textMuted">WhatsApp / Phone</p>
+                        <p class="text-xs font-bold text-pastel-textDark truncate mt-0.5">085730701887</p>
+                    </a>
+
+                    <!-- LinkedIn -->
+                    <button onclick="copyToClipboard('https://www.linkedin.com/in/ayu-manunggal', 'LinkedIn Profile')" class="p-5 rounded-2xl bg-pastel-bg hover:bg-pastel-blush transition-all border border-pastel-border group text-left">
+                        <div class="w-10 h-10 rounded-xl bg-white text-sky-600 flex items-center justify-center mb-3 shadow-2xs group-hover:scale-110 transition-transform">
+                            <i data-lucide="linkedin" class="w-5 h-5"></i>
+                        </div>
+                        <p class="text-[10px] font-bold uppercase tracking-wider text-pastel-textMuted">LinkedIn</p>
+                        <p class="text-xs font-bold text-pastel-textDark truncate mt-0.5">Ayu Manunggal</p>
+                    </button>
+
+                </div>
+
+                <!-- Download CV & Portfolio Buttons -->
+                <div class="pt-4 flex flex-col sm:flex-row justify-center items-center gap-3">
+                    
+                    <!-- ===== CV FILE ===== -->
+                    <a href="files/CV-Ayu-Manunggal.pdf" download class="w-full sm:w-auto px-7 py-3.5 bg-pastel-rose hover:bg-pastel-roseHover text-white text-xs font-bold rounded-2xl shadow-soft hover:shadow-card-hover transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        <span>Download CV (PDF)</span>
+                    </a>
+
+                    <!-- Download Portfolio Button -->
+                    <button onclick="downloadPortfolioPDF()" id="btn-download-portfolio" class="w-full sm:w-auto px-7 py-3.5 bg-white border border-pastel-border hover:border-pastel-rose text-pastel-textDark text-xs font-bold rounded-2xl transition-all shadow-xs flex items-center justify-center gap-2">
+                        <i data-lucide="file-text" class="w-4 h-4 text-pastel-rose"></i>
+                        <span>Download Portfolio</span>
+                    </button>
+
+                </div>
+
+                <div class="flex items-center justify-center gap-2 text-xs text-pastel-textMuted pt-2">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-pastel-rose"></i>
+                    <span>Gresik, Jawa Timur, Indonesia</span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="py-8 border-t border-pastel-border text-center text-xs text-pastel-textMuted bg-white">
+            <p>&copy; 2026 Ayu Manunggal. Built with curiosity and continuous learning.</p>
+        </footer>
+
+    </div>
+
+    <!-- ===== JAVASCRIPT CONTROLLERS ===== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        });
+
+        // 1. Mobile Menu Toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+        }
+
+        // 2. Navbar Scroll Style Adjustment
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-pastel-border', 'shadow-2xs');
+            } else {
+                navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-pastel-border', 'shadow-2xs');
+            }
+        });
+
+        // 3. Intersection Observer for Smooth Fade-In Animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.12
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-element').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 4. LOCAL PROFILE PHOTO UPLOAD FUNCTION
+        function previewProfilePhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                // Ensure image type validation
+                if (!file.type.startsWith('image/')) {
+                    showToast('Invalid File', 'Please select a valid image file.');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgElement = document.getElementById('profile-img-preview');
+                    if (imgElement) {
+                        imgElement.src = e.target.result;
+                        showToast('Photo Updated!', 'Profile photo updated successfully.');
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 5. DOWNLOAD PORTFOLIO AS PDF FUNCTION (Client-Side html2pdf)
+        function downloadPortfolioPDF() {
+            const btnMain = document.getElementById('btn-download-portfolio');
+            const btnNav = document.getElementById('btn-download-portfolio-nav');
+            
+            const originalMainText = btnMain ? btnMain.innerHTML : '';
+            const originalNavText = btnNav ? btnNav.innerHTML : '';
+
+            // Update loading state
+            if (btnMain) {
+                btnMain.innerText = 'Preparing PDF...';
+                btnMain.disabled = true;
+            }
+            if (btnNav) {
+                btnNav.innerText = 'Preparing PDF...';
+                btnNav.disabled = true;
+            }
+
+            showToast('Preparing PDF...', 'Generating downloadable PDF file.');
+
+            const element = document.getElementById('portfolio-content');
+            
+            // Options configuration for html2pdf
+            const opt = {
+                margin:       [0.3, 0.3, 0.3, 0.3],
+                filename:     'Ayu-Manunggal-Portfolio.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false },
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Check if html2pdf is available
+            if (typeof html2pdf !== 'undefined') {
+                html2pdf().set(opt).from(element).save().then(() => {
+                    resetPDFButtons('Portfolio Downloaded ✓');
+                    showToast('Portfolio Downloaded', 'PDF saved to your downloads.');
+                }).catch(err => {
+                    console.warn('html2pdf generation error, triggering fallback:', err);
+                    triggerFallbackPrint();
+                });
+            } else {
+                triggerFallbackPrint();
+            }
+
+            function triggerFallbackPrint() {
+                resetPDFButtons('Print / Save as PDF');
+                window.print();
+            }
+
+            function resetPDFButtons(statusMsg) {
+                setTimeout(() => {
+                    if (btnMain) {
+                        btnMain.innerHTML = originalMainText;
+                        btnMain.disabled = false;
+                    }
+                    if (btnNav) {
+                        btnNav.innerHTML = originalNavText;
+                        btnNav.disabled = false;
+                    }
+                }, 3000);
+            }
+        }
+
+        // 6. COPY TO CLIPBOARD UTILITY & TOAST NOTIFICATION
+        function copyToClipboard(text, label) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('Copied!', `${label} copied to clipboard.`);
+                }).catch(() => {
+                    fallbackCopy(text, label);
+                });
+            } else {
+                fallbackCopy(text, label);
+            }
+        }
+
+        function fallbackCopy(text, label) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showToast('Copied!', `${label} copied to clipboard.`);
+        }
+
+        function showToast(title, message) {
+            const toast = document.getElementById('toast');
+            const toastTitle = document.getElementById('toast-title');
+            const toastMsg = document.getElementById('toast-message');
+
+            if (toast && toastTitle && toastMsg) {
+                toastTitle.textContent = title;
+                toastMsg.textContent = message;
+
+                toast.classList.remove('translate-y-20', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+
+                setTimeout(() => {
+                    toast.classList.remove('translate-y-0', 'opacity-100');
+                    toast.classList.add('translate-y-20', 'opacity-0');
+                }, 3200);
+            }
+        }
+    </script>
+</body>
+</html>
